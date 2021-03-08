@@ -1,0 +1,215 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} Website{% endblock title %} 
+
+{% block body %}
+{% for x in news_api_all.articles|slice:"0:1" %}
+<div id="carouselExampleDark" class="carousel carousel-dark slide" data-bs-ride="carousel">
+  <div class="carousel-indicators">
+    <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+    <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="1" aria-label="Slide 2"></button>
+    <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="2" aria-label="Slide 3"></button>
+  </div>
+  <div class="carousel-inner">
+    <div style="height:600px;" class="carousel-item active" data-bs-interval="10000">
+      <a href="{{x.url}}"><img src="{{x.urlToImage}}" class="d-block w-100" alt="..."></a>
+      <div style="background-color:white; opacity:0.9;" class="carousel-caption d-none d-md-block">
+        <h5>{{x.title}}</h5>
+        <p>{{x.description|truncatechars:100}}</p>
+      </div>
+    </div>
+{% endfor %}
+{% for x in news_api_all.articles|slice:"1:2" %}
+    <div style="height:600px;" class="carousel-item">
+      <a href="{{x.url}}"><img src="{{x.urlToImage}}" class="d-block w-100" alt="..."></a>
+      <div style="background-color:white; opacity:0.9;" class="carousel-caption d-none d-md-block">
+        <h5>{{x.title}}</h5>
+        <p>{{x.description|truncatechars:100}}</p>
+      </div>
+    </div>
+{% endfor %}
+{% for x in news_api_all.articles|slice:"2:3" %}
+    <div style="height:600px;" class="carousel-item">
+      <a href="{{x.url}}"><img src="{{x.urlToImage}}" class="d-block w-100" alt="..."></a>
+      <div style="background-color:white; opacity:0.9;" class="carousel-caption d-none d-md-block">
+        <h5>{{x.title}}</h5>
+        <p>{{x.description|truncatechars:100}}</p>
+      </div>
+    </div>
+  </div>
+{% endfor %}
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark"  data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark"  data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
+
+{% comment %} ----RECENT NEWS---- {% endcomment %}
+
+    <div id="Latest" class="container-fluid fh5co-recent-news mt-5 pb-5">
+        <h2 class="text-uppercase text-center">Recent News</h2>
+        <hr class="mx-auto" />
+
+        <div class="play-list mt-5 pt-4">
+            <div class="owl-carousel owl-carousel5 owl-theme">
+{% for x in news_api_all.articles|slice:"10:20" %}
+                <div>
+                    <div class="card" > <img class="card-img link-img" src="{{x.urlToImage}}" alt="" style="height:250px">
+                        <div class="card-img-overlay">
+                            
+                            <div class="bottom-area">
+                                <div class="row">
+                                    <div class="col-5 pr-0 text-white">
+                                        <a href="{{x.url}}" class="text-white"> <i class="fas fa-retweet"></i>Read More</a>
+                                    </div>
+                                    <div class="col  pl-0   text-right"><span class="text-white"> {{x.publishedAt}} </span></div>
+                                </div>
+                                <h4 class="text-white mt-2">{{x.title}}</h4>
+                                <p class="text-white">{{x.description|truncatechars:5}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+{% endfor %}
+                
+            </div>
+        </div>
+    </div>
+
+{% comment %} ----RECENT NEWS---- {% endcomment %}
+
+{% comment %} ----SPORTS NEWS---- {% endcomment %}
+<div id="Sports" class="container-fluid fh5co-recent-news mt-5 pb-5">
+  <h2 class="text-uppercase text-center">Sports News</h2>
+  <hr class="mx-auto" />
+<div class="row mt-4 pt-5">
+{% for x in news_api_sports.articles %}
+<div class="col-sm">
+  <div class="card" style="width: 18rem;">
+{% if x.urlToImage == None %}
+    <img src="{% static 'images/nophoto.png' %}" class="card-img-top" alt="..." >
+{% else %}
+    <img src="{{x.urlToImage}}" class="card-img-top" alt="...">
+{% endif %}
+    <div class="card-body">
+      <h5 class="card-title">{{x.title}}</h5>
+      <p class="card-text">{{x.description|truncatechars:25}}</p>
+    </div>
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item">Source: {{x.source.name}}</li>
+      <li class="list-group-item">Published Date: {{x.publishedAt}}</li>
+      <li class="list-group-item">Category: Sports</li>
+    </ul>
+    <div class="card-body">
+      <a href="{{x.url}}" class="card-link">Read More</a>
+    </div>
+  </div>
+</div>
+{% endfor %}
+</div>
+</div>
+
+
+{% comment %} ----BUSINESS NEWS---- {% endcomment %}
+<div id="Finance" class="container-fluid fh5co-recent-news mt-5 pb-5">
+<h2 class="text-uppercase text-center">Business & Finance</h2>
+<hr class="mx-auto" />
+    <div class="row mt-4 pt-4" style="padding-left: 20px">
+    {% for x in news_api_business.articles %}
+    <div class="card mb-3" style="max-width: 540px;">
+    <div class="row g-0">
+        <div class="col-md-4">
+        <a href="{{x.url}}"><img src="{{x.urlToImage}}" alt="..." style="width:150px;height:200px"></a>
+        </div>
+        <div class="col-md-8">
+        <div class="card-body">
+            <a href="{{x.url}}" style="color:black; text-decoration:none;"><h5 class="card-title">{{x.title}}</h5></a>
+            <p class="card-text">{{x.description|truncatechars:90}}</p>
+            <p class="card-text"><small class="text-muted">{{x.publishedAt}}</small></p>
+        </div>
+        </div>
+    </div>
+    </div>
+    {% endfor %}
+    </div>
+</div>
+
+{% comment %} ----BUSINESS NEWS---- {% endcomment %}
+
+{% comment %} ----Bitcoin NEWS---- {% endcomment %}
+
+<div id="Bitcoin" class="container-fluid fh5co-recent-news mt-5 pb-5">
+<h2 class="text-uppercase text-center">Bitcoin and Trading</h2>
+<hr class="mx-auto" />
+            <div class="row vr-gallery  mt-4 pt-4">
+                <div class="col-md-8 mb-4">
+                    <div class="row">
+                        <div class="col-md-12 col-lg-7 pr-0 pd-md">
+{% for x in news_api_bitcoin.articles %}
+                            <img src="{{x.urlToImage}}" alt="">
+                        </div>
+                        <div class="col-md-12 col-lg-5 light-bg cus-pd cus-arrow-left">
+                            <p><small>{{x.publishedAt}}</small></p>
+                            <h3>{{x.title}}</h3>
+                            <p>{{x.description|truncatechars:500}} <a href="{{x.url}}"><span>Read More</span></a></p>
+                        </div>
+{% endfor %}             
+                    </div>
+                </div>
+
+                <div class="col-md-4 pl-4 mb-4">
+                    <div class="card">
+                        <img class="card-img h-100" src="{% static 'images/bitcoin gold.jpg' %}" alt="">
+                        <div class="card-img-overlay opacity text-center">
+                            <a class="play-1" href="https://www.youtube.com/watch?v=kOO9UFGWtME"><img
+                                    src="{% static 'images/play-icon.png' %}" alt=""></a>
+                            <h5 class="card-title">What is happening with bitcoin?</h5>
+
+                        </div>
+                    </div>
+                </div>
+</div>                
+{% comment %} ----Bitcoin NEWS---- {% endcomment %}
+
+<div id="Headlines" class="container py-4">
+<h1 class="text-center py-5"> News Headlines</h1>
+<div class="row">
+{% for x in news_api_all.articles|slice:"14:20" %}
+<div class="col-sm">
+<div class="card" style="width: 18rem;">
+  <img src="{{x.urlToImage}}" class="card-img-top" alt="{{x.source.name}}">
+  <div class="card-body">
+    <h5 class="card-title">{{x.title}}</h5>
+    <p class="card-text">{{x.description|truncatechars:100}}</p>
+    <a href="{{x.url}}" target="_blank" class="btn btn-success ml-2" style="background-color:#03133a;">Read More</a>
+    </div>
+  </div>
+  <br>
+</div>
+{% endfor %}
+</div>
+</div>
+
+    <div class="container-fluid jumbotron-fluid stay mt-5 pt-5 pb-5">
+        <h2 class="text-center">Stay Updated</h2>
+        <p class="text-center mt-2">Sign up for our newsletter to receive the latest news and event postings.</p>
+        <form method="post">
+        {% csrf_token %} 
+        <div class="input-group mt-4 mx-auto" style="max-width: 640px">
+            <input type="email" class="form-control" placeholder="YOUR EMAIL ADDRESS">
+            <div class="">
+                <button class="btn btn-success ml-2" type="submit">SIGN UP</button>
+            </div>
+            </form>
+        </div>
+    </div>
+
+
+
+
+
+{% endblock %}

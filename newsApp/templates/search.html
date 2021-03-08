@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+
+{% load static %}
+
+{% block body %}
+<div class="container text-center">
+<h1 class="text-center py-5"> Search News</h1>
+<div>
+<form method="POST">
+{% csrf_token %}
+From:
+<input name="from" id="datefield" type='date' min='2000-01-01' max='2000-13-13' required></input>
+To:
+<input name="to" id="datefield2" type='date' min='2000-01-01' max='2000-13-13' required></input>
+<input name="query" id="queryfield" type='text' required autocomplete="off" placeholder="Search Topic..."></input>
+<input type="submit" class="btn btn-success " style="background-color:#03133a;" name="submit" id="submit" value="Search">
+</form>
+</div> 
+
+
+
+
+<div id="Headlines" class="container py-4">
+<h1 class="text-center py-5"></h1>
+<div class="row">
+{% for x in news_api_request_date.articles %}
+<div class="col-sm">
+<div class="card" style="width: 18rem;">
+{% if x.urlToImage == None %}
+    <img src="{% static 'images/nophoto.png' %}" class="card-img-top" alt="...">
+{% else %}
+  <a href="{{x.url}}"><img src="{{x.urlToImage}}" class="card-img-top" alt="{{x.source.name}}"></a>
+{% endif %}
+  <div class="card-body">
+    <a href="{{x.url}}" style="text-decoration:none; color:#03133a;"><h5 class="card-title">{{x.title}}</h5></a>
+    <p class="card-text">{{x.description|truncatechars:100}}</p>
+    <p class="card-text">Published Date: {{x.publishedAt|slice:"0:10"}}</p>
+    <a href="{{x.url}}" target="_blank" class="btn btn-success ml-2" style="background-color:#03133a;">Read More</a>
+    </div>
+  </div>
+  <br>
+</div>
+{% endfor %}
+</div>
+</div>
+
+</div>
+<script>
+var today = new Date();
+var dd = today.getDate();
+var mm = today.getMonth()+1; //January is 0!
+var yyyy = today.getFullYear();
+var pastdate = today.getDate()+1;
+var pastmonth = today.getMonth();
+ if(dd<10){
+        dd='0'+dd
+    } 
+    if(mm<10){
+        mm='0'+mm
+    } 
+ if(pastdate<10){
+        pastdate='0'+pastdate
+    } 
+    if(pastmonth<10){
+        pastmonth='0'+pastmonth
+    } 
+today = yyyy+'-'+mm+'-'+dd;
+past = yyyy+'-'+pastmonth+'-'+pastdate;
+console.log(past)
+
+document.getElementById("datefield").setAttribute("max", today);
+document.getElementById("datefield").setAttribute("min", past);
+
+document.getElementById("datefield2").setAttribute("max", today);
+document.getElementById("datefield2").setAttribute("min", past);
+
+
+</script>
+{% endblock body %}
